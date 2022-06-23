@@ -6,7 +6,6 @@ from tempfile import NamedTemporaryFile
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.providers.postgres.hooks.postgres import PostgresHook
-# from airflow.providers.amazon.aws.hooks.s3 import S3Hook
 
 default_args = {
     'owner': 'TUAN',
@@ -20,6 +19,7 @@ def postgres_to_file(ds_nodash, next_ds_nodash):
     conn = hook.get_conn()
     cursor = conn.cursor()
     cursor.execute("select * from detailviewdata")
+    print(cursor.description)
     with open(f"dags/get_sales_{ds_nodash}.txt", "w") as f:
         csv_writer = csv.writer(f)
         csv_writer.writerow([i[0] for i in cursor.description])

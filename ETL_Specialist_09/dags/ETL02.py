@@ -41,7 +41,7 @@ def postgres_to_file_cloud(ds_nodash, next_ds_nodash):
 with DAG(
     dag_id="ETL02_DAG",
     default_args=default_args,
-    start_date=datetime(2022, 6, 12),
+    start_date=datetime(2022, 6, 22),
     schedule_interval='@daily'
 ) as dag:
     task1 = PythonOperator(
