@@ -18,21 +18,21 @@ def postgres_to_file(ds_nodash, next_ds_nodash):
     hook = PostgresHook(postgres_conn_id="ProjectDB_connection")
     conn = hook.get_conn()
     cursor = conn.cursor()
-    cursor.execute("select * from detailviewdata")
+    cursor.execute("select * from public.order_details_csv;")
     print(cursor.description)
-    with open(f"dags/get_sales_{ds_nodash}.txt", "w") as f:
+    with open(f"dags/customer_{ds_nodash}.txt", "w") as f:
         csv_writer = csv.writer(f)
         csv_writer.writerow([i[0] for i in cursor.description])
         csv_writer.writerows(cursor)
         f.flush()
         cursor.close()
         conn.close()
-        logging.info("Saved orders data in text file: %s", f"dags/get_sales_{ds_nodash}.txt")
+        logging.info("Saved orders data in text file: %s", f"dags/customer_{ds_nodash}.txt")
 
 with DAG(
     dag_id="ETL01_DAG",
     default_args=default_args,
-    start_date=datetime(2022, 6, 12),
+    start_date=datetime(2022, 6, 22),
     schedule_interval='@daily'
 ) as dag:
     task1 = PythonOperator(
